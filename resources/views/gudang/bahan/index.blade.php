@@ -21,6 +21,9 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="{{ route('gudang.bahan.index') }}">Bahan Baku</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('gudang.permintaan.index') }}">Permintaan</a>
+                    </li>
                 </ul>
                 <span class="navbar-text me-3">
                     {{ Auth::user()->name }}

@@ -35,4 +35,10 @@ class User extends Authenticatable
     {
         return $this->role === 'dapur';
     }
+
+    // Relasi ke permintaan (untuk role dapur)
+    public function permintaan()
+    {
+        return $this->hasMany(Permintaan::class, 'pemohon_id');
+    }
 }

@@ -78,4 +78,10 @@ class BahanBaku extends Model
 
         return $labels[$this->status_otomatis] ?? 'Tidak Diketahui';
     }
+
+    // Relasi ke permintaan detail
+    public function permintaanDetail()
+    {
+        return $this->hasMany(PermintaanDetail::class, 'bahan_id');
+    }
 }

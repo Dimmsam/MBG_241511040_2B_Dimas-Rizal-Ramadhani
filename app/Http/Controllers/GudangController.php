@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\BahanBaku;
+use App\Models\Permintaan;
 use Carbon\Carbon;
 
 class GudangController extends Controller
@@ -121,5 +122,15 @@ class GudangController extends Controller
         $bahan->delete();
 
         return redirect()->route('gudang.bahan.index')->with('success', 'Bahan baku berhasil dihapus');
+    }
+
+    // Lihat permintaan dari dapur
+    public function permintaan()
+    {
+        $permintaan = Permintaan::with(['pemohon', 'details.bahan'])
+                                ->orderBy('created_at', 'desc')
+                                ->get();
+
+        return view('gudang.permintaan.index', compact('permintaan'));
     }
 }

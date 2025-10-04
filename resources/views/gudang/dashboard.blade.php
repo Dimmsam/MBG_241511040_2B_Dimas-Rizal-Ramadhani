@@ -21,6 +21,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('gudang.bahan.index') }}">Bahan Baku</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('gudang.permintaan.index') }}">Permintaan</a>
+                    </li>
                 </ul>
                 <span class="navbar-text me-3">
                     {{ Auth::user()->name }}
@@ -83,6 +86,9 @@
                         </a>
                         <a href="{{ route('gudang.bahan.index') }}" class="btn btn-primary me-2">
                             Lihat Semua Bahan Baku
+                        </a>
+                        <a href="{{ route('gudang.permintaan.index') }}" class="btn btn-info">
+                            Lihat Permintaan Dapur
                         </a>
                     </div>
                 </div>

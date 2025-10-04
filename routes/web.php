@@ -37,6 +37,8 @@ Route::middleware(['auth', 'role:gudang'])
             ->name('bahan.update');
         Route::delete('/bahan-baku/{id}', [GudangController::class, 'destroy'])
             ->name('bahan.destroy');
+        Route::get('/permintaan', [GudangController::class, 'permintaan'])
+            ->name('permintaan.index');
     });
 
 // Routes untuk Petugas Dapur
@@ -46,5 +48,7 @@ Route::middleware(['auth', 'role:dapur'])
     ->group(function () {
         Route::get('/dashboard', [DapurController::class, 'dashboard'])
             ->name('dashboard');
+        Route::get('/permintaan', [DapurController::class, 'index'])
+            ->name('permintaan.index');
     });
     
