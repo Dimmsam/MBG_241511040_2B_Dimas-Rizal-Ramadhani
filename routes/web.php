@@ -2,29 +2,36 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GudangController;
+use App\Http\Controllers\DapurController;
 
+// Route default
 Route::get('/', function () {
-    return redirect('/login');
+    return redirect()->route('login');
 });
 
-// Login routes
+// Auth Routes
 Route::get('/login', [AuthController::class, 'showLogin'])
-    ->middleware('guest')
     ->name('login');
-
 Route::post('/login', [AuthController::class, 'login'])
-    ->middleware('guest');
-
-// Logout route
+    ->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])
-    ->middleware('auth')
     ->name('logout');
 
-// Dashboard routes (protected)
-Route::middleware('auth')->group(function () {
-    Route::get('/dashboard/gudang', [AuthController::class, 'dashboardGudang'])
-        ->name('dashboard.gudang');
-    
-    Route::get('/dashboard/dapur', [AuthController::class, 'dashboardDapur'])
-        ->name('dashboard.dapur');
-});
+// Routes untuk Petugas Gudang
+Route::middleware(['auth', 'role:gudang'])
+    ->prefix('gudang')
+    ->name('gudang.')
+    ->group(function () {
+        Route::get('/dashboard', [GudangController::class, 'dashboard'])    
+            ->name('dashboard');
+    });
+
+// Routes untuk Petugas Dapur
+Route::middleware(['auth', 'role:dapur'])
+    ->prefix('dapur')
+    ->name('dapur.')
+    ->group(function () {
+        Route::get('/dashboard', [DapurController::class, 'dashboard'])
+            ->name('dashboard');
+    });

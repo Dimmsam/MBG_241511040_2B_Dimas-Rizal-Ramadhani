@@ -4,50 +4,47 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class AuthController extends Controller
 {
+    // Menampilkan halaman login
     public function showLogin()
     {
+        if (Auth::check()) {
+            return $this->redirectBasedOnRole();
+        }
         return view('auth.login');
     }
 
+    // Proses login
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'email' => 'required|email',
-            'password' => 'required|min:6',
+            'password' => 'required'
         ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
+        // Cari user berdasarkan email
+        $user = User::where('email', $request->email)->first();
 
-        $credentials = $request->only('email', 'password');
-
-        if (Auth::attempt($credentials)) {
+        // Cek apakah user ada dan password cocok (MD5)
+        if ($user && md5($request->password) === $user->password) {
+            Auth::login($user);
+            
             $request->session()->regenerate();
             
-            $user = Auth::user();
-            
-            // Redirect berdasarkan role
-            if ($user->role === 'gudang') {
-                return redirect()->route('dashboard.gudang')->with('success', 'Login berhasil! Selamat datang ' . $user->name);
-            } elseif ($user->role === 'dapur') {
-                return redirect()->route('dashboard.dapur')->with('success', 'Login berhasil! Selamat datang ' . $user->name);
-            }
-            
-            return redirect()->intended('/')->with('success', 'Login berhasil!');
+            return $this->redirectBasedOnRole();
         }
 
-        return redirect()->back()
-            ->withErrors(['email' => 'Email atau password salah.'])
-            ->withInput();
+        return back()->withErrors([
+            'email' => 'Email atau password salah',
+            'password'=> 'Email atau password salah'
+        ])->withInput();
     }
 
+    // Logout
     public function logout(Request $request)
     {
         Auth::logout();
@@ -55,24 +52,16 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         
-        return redirect('/login')->with('success', 'Logout berhasil!');
+        return redirect()->route('login')->with('success', 'Berhasil logout');
     }
 
-    public function dashboardGudang()
+    // Helper untuk redirect berdasarkan role
+    private function redirectBasedOnRole()
     {
-        if (Auth::user()->role !== 'gudang') {
-            return redirect('/login')->withErrors(['error' => 'Akses ditolak!']);
+        if (Auth::user()->role === 'gudang') {
+            return redirect()->route('gudang.dashboard');
+        } else {
+            return redirect()->route('dapur.dashboard');
         }
-        
-        return view('dashboard.gudang');
-    }
-
-    public function dashboardDapur()
-    {
-        if (Auth::user()->role !== 'dapur') {
-            return redirect('/login')->withErrors(['error' => 'Akses ditolak!']);
-        }
-        
-        return view('dashboard.dapur');
     }
 }

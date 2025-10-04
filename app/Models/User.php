@@ -9,25 +9,23 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    protected $table = 'user';
+    
     protected $fillable = [
         'name',
         'email',
         'password',
         'role',
+        'created_at'
     ];
 
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
-    // Relationship
-    public function permintaan()
-    {
-        return $this->hasMany(Permintaan::class, 'pemohon_id');
-    }
+    public $timestamps = false;
 
-    // Helper Methods
+    // Helper method untuk cek role
     public function isGudang()
     {
         return $this->role === 'gudang';
