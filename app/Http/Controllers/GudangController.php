@@ -106,4 +106,20 @@ class GudangController extends Controller
 
         return redirect()->route('gudang.bahan.index')->with('success', 'Stok bahan baku berhasil diupdate');
     }
+
+    // Hapus bahan baku (hanya yang kadaluarsa)
+    public function destroy($id)
+    {
+        $bahan = BahanBaku::findOrFail($id);
+        
+        // Cek apakah status kadaluarsa
+        if ($bahan->status_otomatis !== 'kadaluarsa') {
+            return redirect()->route('gudang.bahan.index')
+                           ->with('error', 'Hanya bahan baku dengan status kadaluarsa yang dapat dihapus');
+        }
+
+        $bahan->delete();
+
+        return redirect()->route('gudang.bahan.index')->with('success', 'Bahan baku berhasil dihapus');
+    }
 }

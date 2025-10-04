@@ -35,6 +35,8 @@ Route::middleware(['auth', 'role:gudang'])
             ->name('bahan.edit');
         Route::put('/bahan-baku/{id}', [GudangController::class, 'update'])
             ->name('bahan.update');
+        Route::delete('/bahan-baku/{id}', [GudangController::class, 'destroy'])
+            ->name('bahan.destroy');
     });
 
 // Routes untuk Petugas Dapur

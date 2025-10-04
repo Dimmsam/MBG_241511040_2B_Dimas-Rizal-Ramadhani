@@ -92,6 +92,22 @@
                                            class="btn btn-sm btn-warning">
                                             Edit Stok
                                         </a>
+
+                                        @if($bahan->status_otomatis === 'kadaluarsa')
+                                            <form action="{{ route('gudang.bahan.destroy', $bahan->id) }}" 
+                                                  method="POST" class="d-inline" 
+                                                  onsubmit="return confirm('Apakah Anda yakin ingin menghapus bahan {{ $bahan->nama }}?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                    Hapus
+                                                </button>
+                                            </form>
+                                        @else
+                                            <button type="button" class="btn btn-sm btn-secondary" disabled>
+                                                Hapus
+                                            </button>
+                                        @endif
                                     </td>
                                 </tr>
                             @empty
