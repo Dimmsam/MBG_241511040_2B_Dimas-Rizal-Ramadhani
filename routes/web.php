@@ -25,6 +25,10 @@ Route::middleware(['auth', 'role:gudang'])
     ->group(function () {
         Route::get('/dashboard', [GudangController::class, 'dashboard'])    
             ->name('dashboard');
+        Route::get('/bahan-baku/create', [GudangController::class, 'create'])
+            ->name('bahan.create');
+        Route::post('/bahan-baku', [GudangController::class, 'store'])
+            ->name('bahan.store');
     });
 
 // Routes untuk Petugas Dapur
@@ -35,3 +39,4 @@ Route::middleware(['auth', 'role:dapur'])
         Route::get('/dashboard', [DapurController::class, 'dashboard'])
             ->name('dashboard');
     });
+    
