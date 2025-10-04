@@ -18,6 +18,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('gudang.dashboard') }}">Dashboard</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ route('gudang.bahan.index') }}">Bahan Baku</a>
+                    </li>
                 </ul>
                 <span class="navbar-text me-3">
                     {{ Auth::user()->name }}
@@ -130,6 +133,7 @@
                             </div>
 
                             <div class="d-flex justify-content-between">
+                                <a href="{{ route('gudang.bahan.index') }}" class="btn btn-secondary">Batal</a>
                                 <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </form>

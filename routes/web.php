@@ -29,6 +29,8 @@ Route::middleware(['auth', 'role:gudang'])
             ->name('bahan.create');
         Route::post('/bahan-baku', [GudangController::class, 'store'])
             ->name('bahan.store');
+        Route::get('/bahan-baku', [GudangController::class, 'index'])
+            ->name('bahan.index');
     });
 
 // Routes untuk Petugas Dapur

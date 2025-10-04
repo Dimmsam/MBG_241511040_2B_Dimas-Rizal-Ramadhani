@@ -11,7 +11,15 @@ class GudangController extends Controller
     // Dashboard Gudang
     public function dashboard()
     {
-        return view('gudang.dashboard');
+        $totalBahan = BahanBaku::count();
+        $bahanTersedia = BahanBaku::where('jumlah', '>', 0)->count();
+        $bahanSegera = BahanBaku::whereRaw('DATEDIFF(tanggal_kadaluarsa, CURDATE()) <= 3')
+                                ->whereRaw('DATEDIFF(tanggal_kadaluarsa, CURDATE()) >= 0')
+                                ->where('jumlah', '>', 0)
+                                ->count();
+        $bahanKadaluarsa = BahanBaku::whereRaw('CURDATE() >= tanggal_kadaluarsa')->count();
+        
+        return view('gudang.dashboard', compact('totalBahan', 'bahanTersedia', 'bahanSegera', 'bahanKadaluarsa'));
     }
 
     // Form tambah bahan baku
@@ -52,6 +60,23 @@ class GudangController extends Controller
             'created_at' => Carbon::now()
         ]);
 
-        return redirect()->route('gudang.dashboard');
+        return redirect()->route('gudang.bahan.index')->with('success', 'Bahan baku berhasil ditambahkan');
+    }
+
+    // Menampilkan daftar bahan baku
+    public function index()
+    {
+        $bahanBaku = BahanBaku::orderBy('created_at', 'asc')->get();
+        
+        // Update status otomatis untuk setiap bahan
+        foreach ($bahanBaku as $bahan) {
+            $statusOtomatis = $bahan->status_otomatis;
+            if ($bahan->status !== $statusOtomatis) {
+                $bahan->status = $statusOtomatis;
+                $bahan->save();
+            }
+        }
+
+        return view('gudang.bahan.index', compact('bahanBaku'));
     }
 }

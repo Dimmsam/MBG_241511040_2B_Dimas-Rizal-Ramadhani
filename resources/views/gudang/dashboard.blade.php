@@ -18,6 +18,9 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="{{ route('gudang.dashboard') }}">Dashboard</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('gudang.bahan.index') }}">Bahan Baku</a>
+                    </li>
                 </ul>
                 <span class="navbar-text me-3">
                     {{ Auth::user()->name }}
@@ -33,6 +36,41 @@
     <div class="container mt-4">
         <h2 class="mb-4">Dashboard Petugas Gudang</h2>
 
+         <div class="row">
+            <div class="col-md-3">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Bahan</h5>
+                        <h2 class="card-text">{{ $totalBahan }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Bahan Tersedia</h5>
+                        <h2 class="card-text">{{ $bahanTersedia }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-warning mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Segera Kadaluarsa</h5>
+                        <h2 class="card-text">{{ $bahanSegera }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-danger mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Kadaluarsa</h5>
+                        <h2 class="card-text">{{ $bahanKadaluarsa }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <div class="row mt-4">
             <div class="col-md-12">
                 <div class="card">
@@ -43,6 +81,8 @@
                         <a href="{{ route('gudang.bahan.create') }}" class="btn btn-success me-2">
                             Tambah Bahan Baku Baru
                         </a>
+                        <a href="{{ route('gudang.bahan.index') }}" class="btn btn-primary me-2">
+                            Lihat Semua Bahan Baku
                         </a>
                     </div>
                 </div>
