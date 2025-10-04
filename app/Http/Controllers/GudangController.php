@@ -79,4 +79,31 @@ class GudangController extends Controller
 
         return view('gudang.bahan.index', compact('bahanBaku'));
     }
+
+    // Form edit stok bahan baku
+    public function edit($id)
+    {
+        $bahan = BahanBaku::findOrFail($id);
+        return view('gudang.bahan.edit', compact('bahan'));
+    }
+
+    // Proses update stok bahan baku
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'jumlah' => 'required|integer|min:0',
+        ], [
+            'jumlah.required' => 'Jumlah wajib diisi',
+            'jumlah.min' => 'Jumlah tidak boleh negatif',
+        ]);
+
+        $bahan = BahanBaku::findOrFail($id);
+        $bahan->jumlah = $request->jumlah;
+        
+        // Update status berdasarkan jumlah baru
+        $bahan->status = $bahan->status_otomatis;
+        $bahan->save();
+
+        return redirect()->route('gudang.bahan.index')->with('success', 'Stok bahan baku berhasil diupdate');
+    }
 }

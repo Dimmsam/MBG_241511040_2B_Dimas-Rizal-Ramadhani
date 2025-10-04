@@ -43,11 +43,11 @@
                     <div class="card-body">
                         @if($errors->any())
                             <div class="alert alert-danger">
-                                <p class="mb-0">
+                                <ul class="mb-0">
                                     @foreach($errors->all() as $error)
-                                        {{ $error }}
+                                        <li>{{ $error }}</li>
                                     @endforeach
-                                </p>
+                                </ul>
                             </div>
                         @endif
 

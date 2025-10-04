@@ -69,6 +69,7 @@
                                 <th>Tanggal Masuk</th>
                                 <th>Tanggal Kadaluarsa</th>
                                 <th>Status</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -85,6 +86,12 @@
                                         <span class="badge bg-{{ $bahan->status_badge }}">
                                             {{ $bahan->status_label }}
                                         </span>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('gudang.bahan.edit', $bahan->id) }}" 
+                                           class="btn btn-sm btn-warning">
+                                            Edit Stok
+                                        </a>
                                     </td>
                                 </tr>
                             @empty

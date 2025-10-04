@@ -31,6 +31,10 @@ Route::middleware(['auth', 'role:gudang'])
             ->name('bahan.store');
         Route::get('/bahan-baku', [GudangController::class, 'index'])
             ->name('bahan.index');
+        Route::get('/bahan-baku/{id}/edit', [GudangController::class, 'edit'])
+            ->name('bahan.edit');
+        Route::put('/bahan-baku/{id}', [GudangController::class, 'update'])
+            ->name('bahan.update');
     });
 
 // Routes untuk Petugas Dapur
